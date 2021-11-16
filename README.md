@@ -1,1 +1,1 @@
-# material-design-demo
+# material-design
