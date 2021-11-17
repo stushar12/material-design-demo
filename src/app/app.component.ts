@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SharedService } from './shared.service';
 import { has } from 'lodash';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+// import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +27,7 @@ export class AppComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
+  @ViewChild(MatSort) matsort!: MatSort
 
 
   constructor(private http: HttpClient, private service: SharedService, private route: ActivatedRoute) {
@@ -40,7 +43,7 @@ export class AppComponent implements OnInit {
       this.page = Number(this.page)
       this.results = Number(this.results)
       this.getData();
-      this.dataSource.paginator=this.paginator;
+      
     })
 
   }
@@ -58,7 +61,7 @@ export class AppComponent implements OnInit {
           image: ""
         }
         obj1.position = i + 1;
-        obj1.name = user['results'][i]['name']['title'] + ". " + user['results'][i]['name']['first'] + " " + user['results'][i]['name']['last']
+        obj1.name =  user['results'][i]['name']['first'] + " " + user['results'][i]['name']['last']
         obj1.gender = user['results'][i]['gender'];
         obj1.email = user['results'][i]['email'];
         obj1.image = user['results'][i]['picture']['medium'];
@@ -68,10 +71,11 @@ export class AppComponent implements OnInit {
       }
       this.dataSource = new MatTableDataSource(this.userlist)
       this.dataSource.paginator=this.paginator;
+      this.dataSource.sort=this.matsort;
 
-      for (let i = 0; i < this.userlist.length; i++) {
-        console.log(this.userlist[i]);
-      }
+      // for (let i = 0; i < this.userlist.length; i++) {
+      //   console.log(this.userlist[i]);
+      // }
     })
   }
 
@@ -80,6 +84,7 @@ export class AppComponent implements OnInit {
     const value=(filterVal.target as HTMLInputElement).value; 
     this.dataSource.filter=value.trim().toLocaleLowerCase();
   }
+
 
 }
 
