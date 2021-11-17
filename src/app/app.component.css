@@ -7,3 +7,10 @@ mat-form-field
 {
   margin: 20px;
 }
+
+.scrollable-content{
+  height: 500px;
+  overflow-y: auto;
+  /* overflow-x: hidden; */
+
+}
